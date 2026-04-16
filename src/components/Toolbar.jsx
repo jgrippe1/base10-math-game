@@ -42,10 +42,12 @@ function HundredIcon() {
 }
 
 export default function Toolbar() {
-  const addBlock      = useBlockStore((s) => s.addBlock);
-  const clearCanvas   = useBlockStore((s) => s.clearCanvas);
-  const chartVisible  = useBlockStore((s) => s.chartVisible);
-  const toggleChart   = useBlockStore((s) => s.toggleChart);
+  const addBlock         = useBlockStore((s) => s.addBlock);
+  const clearCanvas      = useBlockStore((s) => s.clearCanvas);
+  const chartVisible     = useBlockStore((s) => s.chartVisible);
+  const toggleChart      = useBlockStore((s) => s.toggleChart);
+  const countersVisible  = useBlockStore((s) => s.countersVisible);
+  const toggleCounters   = useBlockStore((s) => s.toggleCounters);
 
   // Spawn near top-left of canvas with some randomness
   const spawnX = () => 60 + Math.random() * 120;
@@ -105,6 +107,20 @@ export default function Toolbar() {
         <span className="btn-chart-icon">📊</span>
         {chartVisible ? 'Hide Chart' : 'Place Value Chart'}
       </button>
+
+      {/* Show/Hide Totals — only visible when chart is on */}
+      {chartVisible && (
+        <button
+          id="btn-counters-toggle"
+          className={`btn-chart-toggle${countersVisible ? ' active' : ''}`}
+          onClick={toggleCounters}
+          aria-label={countersVisible ? 'Hide column totals' : 'Show column totals'}
+          aria-pressed={countersVisible}
+        >
+          <span className="btn-chart-icon">🔢</span>
+          {countersVisible ? 'Hide Totals' : 'Show Totals'}
+        </button>
+      )}
 
       <button
         id="btn-clear"

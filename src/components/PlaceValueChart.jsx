@@ -48,7 +48,8 @@ const COLUMN_DEFS = [
 ];
 
 const HEADER_H   = 64;   // px — top header band
-const COUNTER_H  = 56;   // px — bottom counter area height
+// Badge sits 110px from the bottom edge, clearing the ~60px hint bar at the bottom of the canvas
+const BADGE_BOTTOM = 110;
 const MAX_COUNT  = 9;    // anything above this turns red
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -74,10 +75,10 @@ function countInColumn(blocks, colX, colWidth, validType) {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function PlaceValueChart({ width, height }) {
-  const blocks = useBlockStore((s) => s.blocks);
+  const blocks          = useBlockStore((s) => s.blocks);
+  const countersVisible = useBlockStore((s) => s.countersVisible);
 
-  const colWidth   = width / 3;
-  const bodyHeight = height - HEADER_H - COUNTER_H;
+  const colWidth = width / 3;
 
   return (
     <Layer listening={false}>
@@ -88,18 +89,14 @@ export default function PlaceValueChart({ width, height }) {
 
         // Counter badge geometry
         const badgeW = 90;
-        const badgeH = 38;
-        const badgeX = x + colWidth / 2 - badgeW / 2;
-        const badgeY = height - COUNTER_H / 2 - badgeH / 2;
-
         return (
           <Group key={col.key}>
-            {/* ── Body fill ──────────────────────────────────────────── */}
+            {/* ── Body fill ──────────────────────────────────────── */}
             <Rect
               x={x}
               y={HEADER_H}
               width={colWidth}
-              height={bodyHeight + COUNTER_H}
+              height={height - HEADER_H}
               fill={col.bodyFill}
             />
 
@@ -149,48 +146,54 @@ export default function PlaceValueChart({ width, height }) {
               opacity={0.6}
             />
 
-            {/* ── Counter badge background ─────────────────────────── */}
-            <Rect
-              x={badgeX}
-              y={badgeY}
-              width={badgeW}
-              height={badgeH}
-              fill={over ? '#C62828' : 'rgba(0,0,0,0.55)'}
-              cornerRadius={10}
-              shadowColor={over ? 'rgba(200,0,0,0.6)' : 'rgba(0,0,0,0.4)'}
-              shadowBlur={over ? 14 : 6}
-              shadowOffsetY={2}
-            />
-
-            {/* ── Counter number ───────────────────────────────────── */}
-            <Text
-              x={badgeX}
-              y={badgeY}
-              width={badgeW}
-              height={badgeH}
-              text={String(count)}
-              align="center"
-              verticalAlign="middle"
-              fontSize={20}
-              fontFamily="'Nunito', sans-serif"
-              fontStyle="900"
-              fill={over ? '#FFCDD2' : '#FFFFFF'}
-            />
-
-            {/* ── Overflow warning label ───────────────────────────── */}
-            {over && (
-              <Text
-                x={x}
-                y={badgeY - 22}
-                width={colWidth}
-                text="Too many!"
-                align="center"
-                fontSize={12}
-                fontFamily="'Nunito', sans-serif"
-                fontStyle="700"
-                fill="#EF9A9A"
-              />
-            )}
+            {/* ── Counter badge + overflow label (togglable) ────────── */}
+            {countersVisible && (() => {
+              const badgeW = 90;
+              const badgeH = 38;
+              const badgeX = x + colWidth / 2 - badgeW / 2;
+              const badgeY = height - BADGE_BOTTOM;
+              return (
+                <>
+                  <Rect
+                    x={badgeX}
+                    y={badgeY}
+                    width={badgeW}
+                    height={badgeH}
+                    fill={over ? '#C62828' : 'rgba(0,0,0,0.55)'}
+                    cornerRadius={10}
+                    shadowColor={over ? 'rgba(200,0,0,0.6)' : 'rgba(0,0,0,0.4)'}
+                    shadowBlur={over ? 14 : 6}
+                    shadowOffsetY={2}
+                  />
+                  <Text
+                    x={badgeX}
+                    y={badgeY}
+                    width={badgeW}
+                    height={badgeH}
+                    text={String(count)}
+                    align="center"
+                    verticalAlign="middle"
+                    fontSize={20}
+                    fontFamily="'Nunito', sans-serif"
+                    fontStyle="900"
+                    fill={over ? '#FFCDD2' : '#FFFFFF'}
+                  />
+                  {over && (
+                    <Text
+                      x={x}
+                      y={badgeY - 22}
+                      width={colWidth}
+                      text="Too many!"
+                      align="center"
+                      fontSize={12}
+                      fontFamily="'Nunito', sans-serif"
+                      fontStyle="700"
+                      fill="#EF9A9A"
+                    />
+                  )}
+                </>
+              );
+            })()}
           </Group>
         );
       })}

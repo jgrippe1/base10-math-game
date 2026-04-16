@@ -73,9 +73,13 @@ const useBlockStore = create((set, get) => ({
   // ── Clear canvas ─────────────────────────────────────────────────────────
   clearCanvas: () => set({ blocks: [] }),
 
-  // ── Place value chart visibility ─────────────────────────────────────────
-  chartVisible: false,
-  toggleChart: () => set((s) => ({ chartVisible: !s.chartVisible })),
+  // ── Place value chart visibility ────────────────────────────────────────────
+  chartVisible:    false,
+  toggleChart:     () => set((s) => ({ chartVisible: !s.chartVisible })),
+
+  // ── Column counter visibility (only relevant when chart is on) ──────────
+  countersVisible: true,
+  toggleCounters:  () => set((s) => ({ countersVisible: !s.countersVisible })),
 
   // ── Computed: total value ─────────────────────────────────────────────────
   getTotals: () => {
