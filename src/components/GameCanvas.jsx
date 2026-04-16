@@ -18,9 +18,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Stage, Layer, Line } from 'react-konva';
 import useBlockStore from '../store/useBlockStore';
-import UnitBlock    from './blocks/UnitBlock';
-import TenBlock     from './blocks/TenBlock';
-import HundredBlock from './blocks/HundredBlock';
+import UnitBlock       from './blocks/UnitBlock';
+import TenBlock        from './blocks/TenBlock';
+import HundredBlock    from './blocks/HundredBlock';
+import PlaceValueChart from './PlaceValueChart';
 import {
   isPathClosed,
   getBlocksInLasso,
@@ -42,10 +43,11 @@ export default function GameCanvas() {
   const containerRef = useRef(null);
   const [dims, setDims] = useState({ width: 800, height: 600 });
 
-  const blocks      = useBlockStore((s) => s.blocks);
-  const initBlocks  = useBlockStore((s) => s.initBlocks);
-  const groupBlocks = useBlockStore((s) => s.groupBlocks);
-  const initialized = useRef(false);
+  const blocks       = useBlockStore((s) => s.blocks);
+  const initBlocks   = useBlockStore((s) => s.initBlocks);
+  const groupBlocks  = useBlockStore((s) => s.groupBlocks);
+  const chartVisible = useBlockStore((s) => s.chartVisible);
+  const initialized  = useRef(false);
 
   // ── Lasso state ──────────────────────────────────────────────────────────
   const [lassoPoints, setLassoPoints] = useState([]);   // drives Konva Line
@@ -246,6 +248,9 @@ export default function GameCanvas() {
         onTouchMove={handleStagePointerMove}
         onTouchEnd={handleStagePointerUp}
       >
+        {/* Layer 0 — place value chart (optional background) */}
+        {chartVisible && <PlaceValueChart width={dims.width} height={dims.height} />}
+
         {/* Layer 1 — blocks */}
         <Layer>
           {blocks

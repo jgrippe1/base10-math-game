@@ -255,6 +255,42 @@ body {
   z-index: 100;
 }
 
+/* -- Chart Toggle Button -------------------------------------------- */
+.btn-chart-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border: 1.5px solid rgba(124, 77, 255, 0.4);
+  border-radius: var(--radius-md);
+  background: rgba(124, 77, 255, 0.08);
+  color: #C4B5FD;
+  font-family: var(--font-base);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.03em;
+}
+
+.btn-chart-toggle:hover {
+  background: rgba(124, 77, 255, 0.18);
+  border-color: rgba(124, 77, 255, 0.7);
+  transform: translateY(-1px);
+}
+
+.btn-chart-toggle.active {
+  background: rgba(124, 77, 255, 0.28);
+  border-color: #7C4DFF;
+  color: #EDE9FE;
+  box-shadow: 0 0 16px rgba(124, 77, 255, 0.35);
+}
+
+.btn-chart-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
 /* -- Scrollbar styling (toolbar) ---------------------------- */
 .toolbar::-webkit-scrollbar { width: 4px; }
 .toolbar::-webkit-scrollbar-track { background: transparent; }

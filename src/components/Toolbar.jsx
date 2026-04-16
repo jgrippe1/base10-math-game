@@ -42,8 +42,10 @@ function HundredIcon() {
 }
 
 export default function Toolbar() {
-  const addBlock    = useBlockStore((s) => s.addBlock);
-  const clearCanvas = useBlockStore((s) => s.clearCanvas);
+  const addBlock      = useBlockStore((s) => s.addBlock);
+  const clearCanvas   = useBlockStore((s) => s.clearCanvas);
+  const chartVisible  = useBlockStore((s) => s.chartVisible);
+  const toggleChart   = useBlockStore((s) => s.toggleChart);
 
   // Spawn near top-left of canvas with some randomness
   const spawnX = () => 60 + Math.random() * 120;
@@ -90,8 +92,20 @@ export default function Toolbar() {
         Hundred (100)
       </button>
 
-      {/* Clear */}
+      {/* Canvas controls */}
       <div className="toolbar-section-label">Canvas</div>
+
+      <button
+        id="btn-chart-toggle"
+        className={`btn-chart-toggle${chartVisible ? ' active' : ''}`}
+        onClick={toggleChart}
+        aria-label={chartVisible ? 'Hide place value chart' : 'Show place value chart'}
+        aria-pressed={chartVisible}
+      >
+        <span className="btn-chart-icon">📊</span>
+        {chartVisible ? 'Hide Chart' : 'Place Value Chart'}
+      </button>
+
       <button
         id="btn-clear"
         className="btn-clear"
