@@ -6,6 +6,10 @@ on:
   # Allow manual trigger from the Actions tab
   workflow_dispatch:
 
+# Opt into Node.js 24 now — required before June 2026 when it becomes mandatory
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 # Grant the workflow the permissions needed to deploy to Pages
 permissions:
   contents: read
@@ -28,7 +32,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
