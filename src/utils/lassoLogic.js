@@ -75,6 +75,21 @@ export function getBlocksInLasso(polygon, blocks, type) {
 }
 
 /**
+ * Count ALL blocks inside the lasso polygon regardless of type.
+ * Used to detect mixed-type selections that should not snap.
+ *
+ * @param {number[]}  polygon   Flat array [x0, y0, x1, y1, ...]
+ * @param {object[]}  blocks    Full blocks array from store
+ * @returns {number}            Total block count inside the lasso
+ */
+export function countAllBlocksInLasso(polygon, blocks) {
+  return blocks.filter((b) => {
+    const { cx, cy } = blockCentre(b);
+    return pointInPolygon(cx, cy, polygon);
+  }).length;
+}
+
+/**
  * Given a set of blocks, compute the centroid of their centres.
  * Returns position suitable for placing the new grouped block.
  */

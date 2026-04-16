@@ -25,6 +25,7 @@ import PlaceValueChart from './PlaceValueChart';
 import {
   isPathClosed,
   getBlocksInLasso,
+  countAllBlocksInLasso,
   computeCentroid,
   appendPoint,
 } from '../utils/lassoLogic';
@@ -101,13 +102,19 @@ export default function GameCanvas() {
     (points) => {
       inFlash.current = true;
       const currentBlocks = useBlockStore.getState().blocks;
+
+      // Count EVERY block inside the lasso (all types).
+      // A mixed selection (e.g. 10 tens + 1 unit) must fail even if one
+      // type alone has exactly 10 — the total must also equal 10.
+      const totalInside = countAllBlocksInLasso(points, currentBlocks);
       let snapped = false;
 
       for (const type of ['unit', 'ten']) {
         const toType = type === 'unit' ? 'ten' : 'hundred';
         const inside = getBlocksInLasso(points, currentBlocks, type);
 
-        if (inside.length === 10) {
+        if (inside.length === 10 && totalInside === 10) {
+          // Exactly 10 of this type and nothing else enclosed — snap
           const ids = inside.map((b) => b.id);
           const { centroidX, centroidY } = computeCentroid(inside, type);
           groupBlocks(ids, toType, centroidX, centroidY);
