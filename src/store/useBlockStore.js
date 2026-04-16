@@ -14,7 +14,8 @@ const useBlockStore = create((set, get) => ({
     const blocks = [];
     const cols = 5;
     const startX = 60;
-    const startY = 60;
+    // Start below the 64px chart header so blocks don't spawn inside it
+    const startY = 90;
     const gap = 56;
     for (let i = 0; i < 20; i++) {
       const col = i % cols;
@@ -26,7 +27,7 @@ const useBlockStore = create((set, get) => ({
 
   // ── Add a single block (from toolbar) ─────────────────────────────────────
   addBlock: (type, x, y) => {
-    const block = createBlock(type, x ?? 100 + Math.random() * 200, y ?? 80 + Math.random() * 200);
+    const block = createBlock(type, x ?? 100 + Math.random() * 200, y ?? 90 + Math.random() * 200);
     set((state) => ({ blocks: [...state.blocks, block] }));
   },
 
