@@ -38,3 +38,17 @@ Open [http://localhost:5173/](http://localhost:5173/)
 ## Deployment
 
 Push to `main` — GitHub Actions builds and deploys automatically to GitHub Pages.
+
+---
+
+## ☕ Support the Project
+
+If you find this tool useful in your classroom, tips are greatly appreciated!
+
+[![Tip via PayPal](https://img.shields.io/badge/Tip%20via-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/jgrippe1)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request or open an issue.
